@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-example
+  namespace: argocd
+spec:
+  project: default
+  source:
+    path: deployments/nginx
+    repoURL: 'https://github.com/gnarargs/argo-playground'
+    targetRevision: main
+  destination:
+    namespace: nginx-app
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
